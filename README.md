@@ -58,7 +58,7 @@ Below is more complete example with variables.
 License
 -------
 
-BSD
+MIT
 
 Author Information
 ------------------
