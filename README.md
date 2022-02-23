@@ -1,31 +1,59 @@
-Role Name
+Ansible-Role Filebeat for CentOS 7
 =========
 
-A brief description of the role goes here.
+Role installs Filebeat on CentOS 7. 
+
+Tested on CentOS 7.9.2009 (Core).
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Available variables are listed below, along with default values (see defaults/main.yml):
+
+* The version of filebeat to install.
+  ```yml
+  filebeat_version: "7.14.0"
+  ```
+* The URL (including port) over which Filebeat will send data to Elasticsearch.
+  ```yml
+  filebeat_elasticsearch_url: "http://localhost:9200"
+  ```
+* The URL (including port) over which Filebeat will load dashboards to Kibana.
+  ```yml
+  filebeat_kibana_url:  "http://localhost:5601"
+  ```
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+The simpliest example:
+```yaml
+- name: Install Filebeat
+  roles:
+    - filebeat-role
+```
+Below is more complete example with variables.
+```yaml
+- name: Install Filebeat
+  hosts: filebeat
+  vars:
+    - filebeat_elasticsearch_url: ["http://{{ hostvars['el-instance']['ansible_facts']['default_ipv4']['address'] }}:9200/"]
+    - filebeat_kibana_url:  "http://{{ hostvars['k-instance']['ansible_facts']['default_ipv4']['address'] }}:5601"
+    - kibana_version: "7.14.0"
+  roles:
+    - filebeat-role
+  tags: filebeat
+```
 
 License
 -------
@@ -35,4 +63,5 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+The role was created by Sergey Shadurskiy in 2022/02 as a homework during a 10-month DevOps cource on Netology online educational platform.
+
