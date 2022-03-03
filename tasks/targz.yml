@@ -72,10 +72,10 @@
     - name: Enable and configure the elasticsearch module
       become: true
       command:
-        cmd: "{{ filebeat_home }}/filebeat modules enable system"
+        cmd: "{{ filebeat_home }}/filebeat modules enable elasticsearch"
         chdir: "{{ filebeat_home }}"
       register: filebeat_modules
-      changed_when: filebeat_modules.stdout != 'Module system is already enabled'
+      changed_when: filebeat_modules.stdout != 'Module elasticsearch is already enabled'
 
 - name: restart Filebeat binary
   shell:
