@@ -8,7 +8,7 @@
 
 - name: Install Filebeat
   block:
-    - name: Install latest Logstash
+    - name: Install latest Filebeat
       become: true
       yum:
         name: "/tmp/filebeat-{{ filebeat_version }}-x86_64.rpm"
