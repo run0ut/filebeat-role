@@ -61,19 +61,27 @@
         dest: /etc/profile.d/filebeat.sh
         mode: 0755
 
+    - name: Enable and configure the system module
+      become: true
+      command:
+        cmd: "{{ filebeat_home }}/filebeat modules enable system"
+        chdir: "{{ filebeat_home }}"
+      register: filebeat_modules
+      changed_when: filebeat_modules.stdout != 'Module system is already enabled'
+
+    - name: Enable and configure the elasticsearch module
+      become: true
+      command:
+        cmd: "{{ filebeat_home }}/filebeat modules enable system"
+        chdir: "{{ filebeat_home }}"
+      register: filebeat_modules
+      changed_when: filebeat_modules.stdout != 'Module system is already enabled'
+
 - name: restart Filebeat binary
   shell:
     cmd: docker exec -d -it {{ ansible_nodename }} bash /etc/profile.d/filebeat.sh
   changed_when: false
   delegate_to: 127.0.0.1
-
-- name: Enable and configure the system module
-  become: true
-  command:
-    cmd: "{{ filebeat_home }}/filebeat modules enable system"
-    chdir: "{{ filebeat_home }}"
-  register: filebeat_modules
-  changed_when: filebeat_modules.stdout != 'Module system is already enabled'
 
 - name: Load Kibana dashboards
   when:
